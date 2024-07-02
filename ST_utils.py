@@ -7,6 +7,7 @@ from mpl_toolkits.axes_grid1.anchored_artists import AnchoredSizeBar
 import matplotlib.font_manager as fm
 import matplotlib.patches as mpatches
 from scipy.stats import ttest_ind, mannwhitneyu, ranksums
+from sklearn.neighbors import NearestNeighbors
 
 def add_spatial_coordinates(adata, csv_path):
     # Read the CSV file containing cell names and coordinates
@@ -33,6 +34,8 @@ def add_spatial_coordinates(adata, csv_path):
 
     return adata
 
+### Define injury locus based on the kNN approach
+
 def calculate_celltype_neighbors(adata, k_neighbors, celltype_label,cell_obs):
     """
     Calculate the count of K nearest neighbors of each spot that belong to a specific cell type category 
@@ -50,10 +53,6 @@ def calculate_celltype_neighbors(adata, k_neighbors, celltype_label,cell_obs):
     Returns
     -------
     None
-    
-    -------
-    ##E.g     for celltype in np.unique(adata.obs['max_pred_celltype']):
-        # adata = calculate_celltype_neighbors(adata, 300, celltype)
     """
     # Get coordinates of spots
     coordinates = adata.obsm['spatial']
